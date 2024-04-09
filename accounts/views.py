@@ -58,3 +58,5 @@ class LoginView(generics.CreateAPIView):
     
 
     
+def index(request):
+   return render(request,'index.html')
