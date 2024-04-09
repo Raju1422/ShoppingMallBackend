@@ -5,9 +5,11 @@ from rest_framework import status
 from .serializers import BillItemSerializer,BillSerializer,AnalyticsSerializer
 from .models import Bill,BillItem
 from django.db.models import Count,Sum
+from rest_framework import permissions
 class BillView(generics.ListCreateAPIView):
     queryset =Bill.objects.all()
     serializer_class = BillSerializer
+    permission_classes =[permissions.IsAuthenticated]
 
     def post(self,request,*args,**kwargs):
        try: 
@@ -25,6 +27,7 @@ class BillView(generics.ListCreateAPIView):
 
 class AnalyticsApiView(generics.ListAPIView):
     serializer_class = AnalyticsSerializer
+    permission_classes =[permissions.IsAuthenticated]
 
     def get_queryset(self):
          max_sales_employee = Bill.objects.values('employee__user__username').annotate(total_sales=Count('employee')).order_by('-total_sales').first()
